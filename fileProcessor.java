@@ -99,6 +99,7 @@ public class fileProcessor{
                count = 1;
            words.put(word, count);
 		}
+		System.out.println("Wordcount is " + count);
 		myScanner.close();
 	}
 	
@@ -124,18 +125,88 @@ public class fileProcessor{
 	
 	public void top10() 
 	{
+		
+		Map<String, Long> map1 = fileArray1.stream()
+		        .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+
+		List<Map.Entry<String, Long>> result1 = map1.entrySet().stream()
+		        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+		        .limit(10)
+		        .collect(Collectors.toList());
+		System.out.println("The top 10 words and their frequency in the first file are: \n" + result1);
+		
+		Map<String, Long> map2 = fileArray2.stream()
+		        .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+
+		List<Map.Entry<String, Long>> result2 = map2.entrySet().stream()
+		        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+		        .limit(10)
+		        .collect(Collectors.toList());
+		System.out.println("The top 10 words and their frequency in the second file are: \n" + result2);
+		
+		
         List<String> combinedList = Stream.of(fileArray1, fileArray2)
                 .flatMap(x -> x.stream())
                 .collect(Collectors.toList());
         //System.out.println(combinedList);
-		Map<String, Long> map = combinedList.stream()
+		Map<String, Long> map3 = combinedList.stream()
 		        .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
 
-		List<Map.Entry<String, Long>> result = map.entrySet().stream()
+		List<Map.Entry<String, Long>> result3 = map3.entrySet().stream()
 		        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 		        .limit(10)
 		        .collect(Collectors.toList());
-		System.out.println(result);
+		System.out.println("The top 10 words and their frequency in the two files combined are: \n" +result3);
+		
+		
+		//ArrayList<String> list = new ArrayList<String>(); 
+		
+		//Collections.sort((List<Map.Entry<String, Long>>) result3);
+		//result1.sort(null);
+		//result2.sort(null);
+		
+		System.out.println(result1);
+		System.out.println(result2);
+        int i = 0;
+        int n = 0;
+        int match = 0;
+        
+        while(i<result1.size() && i<result2.size())
+        {
+            if(result2.contains(result1.get(i))){
+                System.out.println(result1.get(i) + " is in both lists");
+            }
+        }
+        
+        //while (i < result1.size() && n < result2.size()) 
+        //{
+         //   if (result1.get(i).equals(result2.get(n)))
+          //  {
+          //      match++;
+         //   }
+            //System.out.println("test");
+     //   }
+        
+        System.out.println("test");
+        System.out.println("The percentage of elements that are equal are" + match * 100 / result2.size());
 	}
+	
+    /*public int getPercentThatMatch(int[] winningNumbers) {
+        //Arrays.sort(numberList);
+        //Arrays.sort(winningNumbers);
+        int i = 0, n = 0, match = 0;
+        while (i < fileArray1.length && n < fileArray2.length) {
+            if (numberList[i] < winningNumbers[n]) {
+                i++;
+            } else if (numberList[i] > winningNumbers[n]) {
+                n++;
+            } else {
+                match++;
+                i++;
+                n++;
+            }
+        }
+        return match * 100 / winningNumbers.length;
+    } */
 
 }
