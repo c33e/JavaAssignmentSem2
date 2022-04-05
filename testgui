@@ -1,0 +1,133 @@
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class testgui extends JFrame implements ActionListener{
+	
+	////////////////////////
+	
+	JLabel label1;
+	JButton button1, button2, button3, button4;
+	JPanel panel1;
+	
+	///////////
+	JFrame frame;
+	
+	Scanner myScanner, myScanner2;
+	File file1 = new File("sunflowers.txt");
+    File file2 = new File("wildflowers.txt");
+    public static String[] stopwords = {".", ",", "?", "!", "a", "as", "able", "about", "above", "according", "accordingly", "across", "actually", "after", "afterwards", "again", "against", "aint", "all", "allow", "allows", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "another", "any", "anybody", "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "arent", "around", "as", "aside", "ask", "asking", "associated", "at", "available", "away", "awfully", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "behind", "being", "believe", "below", "beside", "besides", "best", "better", "between", "beyond", "both", "brief", "but", "by", "cmon", "cs", "came", "can", "cant", "cannot", "cant", "cause", "causes", "certain", "certainly", "changes", "clearly", "co", "com", "come", "comes", "concerning", "consequently", "consider", "considering", "contain", "containing", "contains", "corresponding", "could", "couldnt", "course", "currently", "definitely", "described", "despite", "did", "didnt", "different", "do", "does", "doesnt", "doing", "dont", "done", "down", "downwards", "during", "each", "edu", "eg", "eight", "either", "else", "elsewhere", "enough", "entirely", "especially", "et", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "exactly", "example", "except", "far", "few", "ff", "fifth", "first", "five", "followed", "following", "follows", "for", "former", "formerly", "forth", "four", "from", "further", "furthermore", "get", "gets", "getting", "given", "gives", "go", "goes", "going", "gone", "got", "gotten", "greetings", "had", "hadnt", "happens", "hardly", "has", "hasnt", "have", "havent", "having", "he", "hes", "hello", "help", "hence", "her", "here", "heres", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "hi", "him", "himself", "his", "hither", "hopefully", "how", "howbeit", "however", "i", "id", "ill", "im", "ive", "ie", "if", "ignored", "immediate", "in", "inasmuch", "inc", "indeed", "indicate", "indicated", "indicates", "inner", "insofar", "instead", "into", "inward", "is", "isnt", "it", "itd", "itll", "its", "its", "itself", "just", "keep", "keeps", "kept", "know", "knows", "known", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "little", "look", "looking", "looks", "ltd", "mainly", "many", "may", "maybe", "me", "mean", "meanwhile", "merely", "might", "more", "moreover", "most", "mostly", "much", "must", "my", "myself", "name", "namely", "nd", "near", "nearly", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "no", "nobody", "non", "none", "noone", "nor", "normally", "not", "nothing", "novel", "now", "nowhere", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "on", "once", "one", "ones", "only", "onto", "or", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "own", "particular", "particularly", "per", "perhaps", "placed", "please", "plus", "possible", "presumably", "probably", "provides", "que", "quite", "qv", "rather", "rd", "re", "really", "reasonably", "regarding", "regardless", "regards", "relatively", "respectively", "right", "said", "same", "saw", "say", "saying", "says", "second", "secondly", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sensible", "sent", "serious", "seriously", "seven", "several", "shall", "she", "should", "shouldnt", "since", "six", "so", "some", "somebody", "somehow", "someone", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specified", "specify", "specifying", "still", "sub", "such", "sup", "sure", "ts", "take", "taken", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "thats", "thats", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "theres", "thereafter", "thereby", "therefore", "therein", "theres", "thereupon", "these", "They", "they", "theyd", "theyll", "theyre", "theyve", "think", "third", "this", "thorough", "thoroughly", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "twice", "two", "un", "under", "unfortunately", "unless", "unlikely", "until", "unto", "up", "upon", "us", "use", "used", "useful", "uses", "using", "usually", "value", "various", "very", "via", "viz", "vs", "want", "wants", "was", "wasnt", "way", "we", "wed", "well", "were", "weve", "welcome", "well", "went", "were", "werent", "what", "whats", "whatever", "when", "whence", "whenever", "where", "wheres", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whos", "whoever", "whole", "whom", "whose", "why", "will", "willing", "wish", "with", "within", "without", "wont", "wonder", "would", "would", "wouldnt", "yes", "yet", "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves", "zero"};
+	ArrayList<String> fileArray1 = new ArrayList<String>();
+	ArrayList<String> fileArray2 = new ArrayList<String>();
+	
+	//////////
+
+	////////////
+	
+	////////////////////////
+	
+	public testgui(String title) {
+	
+		super(title);
+		setVisible(true);
+		setSize(500,500);
+		setLayout(new FlowLayout());
+		
+	    panel1 = new JPanel();
+		add(panel1);
+		panel1.setBackground(Color.red);
+		panel1.setLayout(new FlowLayout());
+		
+		
+		button1 = new JButton("Click Me");
+		panel1.add(button1);
+		button1.setToolTipText("This is the first button, and show a message when clicked");
+		button1.addActionListener(this);
+		
+		button2 = new JButton("Click Me 2");
+		panel1.add(button2);
+		button2.setToolTipText("This is the second button, and show a message when clicked");
+		button2.addActionListener(this);
+		
+		button3 = new JButton("Click Me 3");
+		panel1.add(button3);
+		button3.setToolTipText("This is the second button, and show a message when clicked");
+		button3.addActionListener(this);
+	
+	}
+
+@Override
+public void actionPerformed(ActionEvent e) 
+{
+	if (e.getSource()==button1) 
+	{
+		JOptionPane.showMessageDialog(this, "Button Clicked");
+		try
+		{
+		    myScanner = new Scanner(file1);
+		    myScanner2 = new Scanner(file2);
+		    
+		    while (myScanner.hasNextLine())
+		    {
+		        fileArray1.add(myScanner.next());
+		        
+		    }
+	           
+			while (myScanner2.hasNextLine())
+			{
+			     fileArray2.add(myScanner2.next());
+			}
+		   
+		}
+		catch(FileNotFoundException er)
+		{
+			System.out.println("An error has occured: " + er.getMessage());
+		}
+	}
+		
+	else if(e.getSource()==button2) 
+	{
+		JOptionPane.showMessageDialog(this, "Second Button Clicked");
+		
+        for (int i = 0; i < fileArray1.size(); i++) 
+        {
+            // get the item as string
+            for (int j = 0; j < stopwords.length; j++) {
+                if (stopwords[j].contains(fileArray1.get(i))) {
+                    fileArray1.remove(i);
+                }
+            }
+        }
+        
+	     //remove stop words here from the temp list
+        for (int i = 0; i < fileArray2.size(); i++) 
+        {
+            // get the item as string
+            for (int j = 0; j < stopwords.length; j++) {
+                if (stopwords[j].contains(fileArray2.get(i))) {
+                    fileArray2.remove(i);
+                }
+            }
+        }
+	}
+	else if(e.getSource()==button3) 
+	{
+		JOptionPane.showMessageDialog(this, "testing" + fileArray2);
+	}
+	
+	}
+
+}
