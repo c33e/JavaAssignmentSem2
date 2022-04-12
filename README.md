@@ -12,3 +12,6 @@ It is controlled through a GUI, the button clicks activate the methods. It opens
 I am running Java version 11.04.14 and programming through Eclipse IDE.
 
 No supplementary installations needed to run this.
+
+GitHub: https://github.com/c33e/JavaAssignmentSem2.git
+Youtube video: https://youtu.be/-eFiJ8Ti1xw
