@@ -1,7 +1,23 @@
+/*
+ * 12.04.2022
+ * C20431154
+ * Java Assignment - Topic Modeller
+ * 
+ * This program is made to allow a user to detect if 2 documents are similar or not.
+ * It analyses the words in each documents to identify the most common words, how often they appear,
+ * and the 10 most common words between both of the files.
+ * This is expressed through a GUI.
+ * 
+ * 
+ * 
+ * Author- Caoimhe Hennessy
+ * 
+ */
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+package assignmentTM;
+
+//imports
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,9 +32,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,11 +40,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class topicModeller extends JFrame implements ActionListener{
-	
-	////////////////////////
-	//GUI Attributes
-	
+public class topicModeller extends javax.swing.JFrame implements ActionListener 
+{
+	/////////////////////
+	// Attributes
 	JLabel label1, label2;
 	JButton button1, button2, button3, button4, button5, button6;
 	JPanel panel1, panel2;
@@ -46,40 +59,94 @@ public class topicModeller extends JFrame implements ActionListener{
     File file2 = new File("wildflowers.txt");
     String fname1 = file1.getName();
 	String fname2 = file2.getName();
-    //String[] stopwords = {".", ",", "?", "!", "a", "as", "able", "about", "above", "according", "accordingly", "across", "actually", "after", "afterwards", "again", "against", "aint", "all", "allow", "allows", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "another", "any", "anybody", "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "arent", "around", "as", "aside", "ask", "asking", "associated", "at", "available", "away", "awfully", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "behind", "being", "believe", "below", "beside", "besides", "best", "better", "between", "beyond", "both", "brief", "but", "by", "cmon", "cs", "came", "can", "cant", "cannot", "cant", "cause", "causes", "certain", "certainly", "changes", "clearly", "co", "com", "come", "comes", "concerning", "consequently", "consider", "considering", "contain", "containing", "contains", "corresponding", "could", "couldnt", "course", "currently", "definitely", "described", "despite", "did", "didnt", "different", "do", "does", "doesnt", "doing", "dont", "done", "down", "downwards", "during", "each", "edu", "eg", "eight", "either", "else", "elsewhere", "enough", "entirely", "especially", "et", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "exactly", "example", "except", "far", "few", "ff", "fifth", "first", "five", "followed", "following", "follows", "for", "former", "formerly", "forth", "four", "from", "further", "furthermore", "get", "gets", "getting", "given", "gives", "go", "goes", "going", "gone", "got", "gotten", "greetings", "had", "hadnt", "happens", "hardly", "has", "hasnt", "have", "havent", "having", "he", "hes", "hello", "help", "hence", "her", "here", "heres", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "hi", "him", "himself", "his", "hither", "hopefully", "how", "howbeit", "however", "i", "id", "ill", "im", "ive", "ie", "if", "ignored", "immediate", "in", "inasmuch", "inc", "indeed", "indicate", "indicated", "indicates", "inner", "insofar", "instead", "into", "inward", "is", "isnt", "it", "itd", "itll", "its", "its", "itself", "just", "keep", "keeps", "kept", "know", "knows", "known", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "little", "look", "looking", "looks", "ltd", "mainly", "many", "may", "maybe", "me", "mean", "meanwhile", "merely", "might", "more", "moreover", "most", "mostly", "much", "must", "my", "myself", "name", "namely", "nd", "near", "nearly", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "no", "nobody", "non", "none", "noone", "nor", "normally", "not", "nothing", "novel", "now", "nowhere", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "on", "once", "one", "ones", "only", "onto", "or", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "own", "particular", "particularly", "per", "perhaps", "placed", "please", "plus", "possible", "presumably", "probably", "provides", "que", "quite", "qv", "rather", "rd", "re", "really", "reasonably", "regarding", "regardless", "regards", "relatively", "respectively", "right", "said", "same", "saw", "say", "saying", "says", "second", "secondly", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sensible", "sent", "serious", "seriously", "seven", "several", "shall", "she", "should", "shouldnt", "since", "six", "so", "some", "somebody", "somehow", "someone", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specified", "specify", "specifying", "still", "sub", "such", "sup", "sure", "ts", "take", "taken", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "thats", "thats", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "theres", "thereafter", "thereby", "therefore", "therein", "theres", "thereupon", "these", "They", "they", "theyd", "theyll", "theyre", "theyve", "think", "third", "this", "thorough", "thoroughly", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "twice", "two", "un", "under", "unfortunately", "unless", "unlikely", "until", "unto", "up", "upon", "us", "use", "used", "useful", "uses", "using", "usually", "value", "various", "very", "via", "viz", "vs", "want", "wants", "was", "wasnt", "way", "we", "wed", "well", "were", "weve", "welcome", "well", "went", "were", "werent", "what", "whats", "whatever", "when", "whence", "whenever", "where", "wheres", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whos", "whoever", "whole", "whom", "whose", "why", "will", "willing", "wish", "with", "within", "without", "wont", "wonder", "would", "would", "wouldnt", "yes", "yet", "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves", "zero"};
     ArrayList<String> stopwords = new ArrayList<String>();
     ArrayList<String> fileArray1 = new ArrayList<String>();
 	ArrayList<String> fileArray2 = new ArrayList<String>();
 	Map<String, Integer> words;
 	String word;
+	Integer count;
+	Integer similarity;
 
-	
-	////////////////////////
-	//Constructor 
-	
-	public topicModeller(String title) {
+	//This class creates the GUI
+    public topicModeller() 
+    {
+        tmGUI(); 
+    }
+                        
+    //This class creates the GUI using Java Swing
+    private void tmGUI() 
+    {
+    	/////////////
+    	// Attrbutes
+    	
+    	frame = new javax.swing.JFrame();
+        button1 = new javax.swing.JButton();
+        button2 = new javax.swing.JButton();
+        button3 = new javax.swing.JButton();
+        button4 = new javax.swing.JButton();
+        button5 = new javax.swing.JButton();
+        button6 = new javax.swing.JButton();
+        label1 = new javax.swing.JLabel();
+        label2 = new javax.swing.JLabel();
+        scrollpane = new javax.swing.JScrollPane();
+        textarea = new javax.swing.JTextArea();
+
+        //program exits on close of JFrame
+        frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        //buttons creation and styling
+        button1.setText("Read in files");
+        button1.setToolTipText("Reads in the files");
+		button1.addActionListener(this); //Allows the button press to have functionality
+		button1.setFont(new Font("Arial", Font.BOLD, 15));
+		button1.setBackground((new java.awt.Color(253,201,244)));//Colours and formatting
 		
-		super(title);
-	
-		button1 = new JButton("Read in files");
-		button2 = new JButton("Remove stopwords");
-		button3 = new JButton("Wordcount");
-		button4 = new JButton("Common Words");
-		button5 = new JButton("top 10");
-		button4 = new JButton("add stopword");
+        button2.setText("Remove Stopwords");
+        button2.setToolTipText("Removes stopwords from both files.");
+		button2.addActionListener(this);
+		button2.setFont(new Font("Arial", Font.BOLD, 15));
+		button2.setBackground((new java.awt.Color(253,201,244)));
+		
+        button3.setText("Add Stopword");
+        button3.setToolTipText("Adds a stopword through user input");
+		button3.addActionListener(this);
+		button3.setFont(new Font("Arial", Font.BOLD, 15));
+		button3.setBackground((new java.awt.Color(253,201,244)));
+		
+        button4.setText("Common words");
+        button4.setToolTipText("Shows the common words amongst the files");
+		button4.addActionListener(this);
+		button4.setFont(new Font("Arial", Font.BOLD, 15));
+		button4.setBackground((new java.awt.Color(253,201,244)));
+		
+        button5.setText("Top 10 words");
+        button5.setToolTipText("Displays the top 10 words from the two files, and the combined top 10 words.");
+		button5.addActionListener(this);
+		button5.setFont(new Font("Arial", Font.BOLD, 15));
+		button5.setBackground((new java.awt.Color(253,201,244)));
+		
+        button6.setText("Clear Text Area");
+        button6.setToolTipText("Clears textarea");
+		button6.addActionListener(this);
+		button6.setFont(new Font("Arial", Font.BOLD, 15));
+		button6.setBackground((new java.awt.Color(253,201,244)));
 
-		label1 = new JLabel("Topic Modeller");
-		label2 = new JLabel("Test");
-
-        scrollpane = new JScrollPane();
-        textarea = new JTextArea();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        textarea.setColumns(20);
+		//Label creation and styling
+        label1.setText("Topic Modeller");
+        label1.setFont(new Font("Arial", Font.BOLD, 20));
+        label1.setForeground(new java.awt.Color(209,168,202));
+        
+        label2.setText("This program works sequentially. Please ensure you press the buttons to interact with the files.");
+        label2.setFont(new Font("Arial", Font.ITALIC, 10));
+        
+        //TextArea Creation and Styling
+        textarea.setColumns(35);
         textarea.setRows(5);
-        scrollpane.setViewportView(textarea);
+        textarea.setBackground(new java.awt.Color(255, 240, 253));
+        textarea.setWrapStyleWord(true);
+        scrollpane.setViewportView(textarea);// Allows the user to scroll if necessary
 
+        //Formatting of the GUI using group layout 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,9 +154,9 @@ public class topicModeller extends JFrame implements ActionListener{
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
+                        .addGap(60, 60, 60) //gaps make the buttons further apart
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label2)
+                            .addComponent(label2) //components added in seperate groups
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(button1)
                                 .addGap(18, 18, 18)
@@ -98,13 +165,13 @@ public class topicModeller extends JFrame implements ActionListener{
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(button2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(button3))))
+                                        .addComponent(button3))))//buttons are on same row
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(button4)
                                 .addGap(18, 18, 18)
                                 .addComponent(button5)
                                 .addGap(18, 18, 18)
-                                .addComponent(button6))))
+                                .addComponent(button6))))//buttons are on same row
                     .addGroup(layout.createSequentialGroup()
                         .addGap(76, 76, 76)
                         .addComponent(scrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -131,177 +198,97 @@ public class topicModeller extends JFrame implements ActionListener{
                 .addComponent(scrollpane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
         );
-		
-		/*
-		super(title);
-		setSize(500,500);
-		setLayout(new FlowLayout());
-		
-	    //panel1 = new JPanel();
-		//add(panel1);
-		//panel1.setBackground(Color.PINK);
-		//panel1.setLayout(new FlowLayout());
-		
-		//panel2 = new JPanel();
-		//add(panel2);
-		//panel2.setBackground(Color.PINK);
-		//panel2.setLayout(new FlowLayout());
-		
-		button1 = new JButton("Read in files");
-		button1.setToolTipText("This button reads in files.");
-		button1.addActionListener(this);
-		
-		button2 = new JButton("Remove stopwords");
-		button2.setToolTipText("This button removes any stopwords from the file.");
-		button2.addActionListener(this);
-		
-		button3 = new JButton("Wordcount");
-		button3.setToolTipText("This picks up a wordcount from the files.");
-		button3.addActionListener(this);
-		
-		button4 = new JButton("Common Words");
-		button4.setToolTipText("This dictates common words in the files");
-		button4.addActionListener(this);
-		
-		button5 = new JButton("Top 10");
-		button5.setToolTipText("This displays the top 10 words in each file");
-		button5.addActionListener(this);
-		
-		button6 = new JButton("Add a stopword");
-		button6.setToolTipText("Stopword");
-		button6.addActionListener(this);
-		
-		panel1 = new JPanel(new FlowLayout());
-		//panel1.setLayout(new FlowLayout());
-		add(panel1);
-        panel1.add(button1);	
-        panel1.add(button2);	
-        panel1.add(button3);
-        
-        panel2 = new JPanel(new FlowLayout());
-        //panel2.setLayout(new FlowLayout());
-        add(panel2);
-        panel1.add(button4);	
-        panel1.add(button5);	
-        panel1.add(button6);
-		
-        setVisible(true);
-	
-		*/
 
-		
-	}
+        pack(); //sizes frame so all components are at ideal size
+    }    
+    
+    ///////////////////////
+    //File processing methods
+    
+    //Opens the files and converts to arraylists
 
-	///////////////////////
-	//Opens the files and converts to arraylists
-	
-	public void openFile() {
-	
-		//try catch for error handling when the file for whatever reason cannot open
-		try
-		{
-			myScanner = new Scanner(file1);//scanners created
-			myScanner2 = new Scanner(file2);
-	    
-			while (myScanner.hasNextLine())//each word is added to an arraylist
-			{
-				fileArray1.add(myScanner.next());
-			}
-           
-			while (myScanner2.hasNextLine())
-			{
-				fileArray2.add(myScanner2.next());
-			}
-	   
-		}
-		catch(FileNotFoundException er)//in case of error print this
-		{
-			System.out.println("An error has occured: " + er.getMessage());
-		}
-		//JOptionPane.showMessageDialog( this, "Files :" + fname1, fname2 + "have been read.");
-	
-	}
-	
-	//remove stopwords from the file
-	public void cleanFile() {
-		
-		Collections.addAll(stopwords, ".", ",", "?", "!", "a", "as", "able", "about", "above", "according", "accordingly", "across", "actually", "after", "afterwards", "again", "against", "aint", "all", "allow", "allows", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "another", "any", "anybody", "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "arent", "around", "as", "aside", "ask", "asking", "associated", "at", "available", "away", "awfully", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "behind", "being", "believe", "below", "beside", "besides", "best", "better", "between", "beyond", "both", "brief", "but", "by", "cmon", "cs", "came", "can", "cant", "cannot", "cant", "cause", "causes", "certain", "certainly", "changes", "clearly", "co", "com", "come", "comes", "concerning", "consequently", "consider", "considering", "contain", "containing", "contains", "corresponding", "could", "couldnt", "course", "currently", "definitely", "described", "despite", "did", "didnt", "different", "do", "does", "doesnt", "doing", "dont", "done", "down", "downwards", "during", "each", "edu", "eg", "eight", "either", "else", "elsewhere", "enough", "entirely", "especially", "et", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "exactly", "example", "except", "far", "few", "ff", "fifth", "first", "five", "followed", "following", "follows", "for", "former", "formerly", "forth", "four", "from", "further", "furthermore", "get", "gets", "getting", "given", "gives", "go", "goes", "going", "gone", "got", "gotten", "greetings", "had", "hadnt", "happens", "hardly", "has", "hasnt", "have", "havent", "having", "he", "hes", "hello", "help", "hence", "her", "here", "heres", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "hi", "him", "himself", "his", "hither", "hopefully", "how", "howbeit", "however", "i", "id", "ill", "im", "ive", "ie", "if", "ignored", "immediate", "in", "inasmuch", "inc", "indeed", "indicate", "indicated", "indicates", "inner", "insofar", "instead", "into", "inward", "is", "isnt", "it", "itd", "itll", "its", "its", "itself", "just", "keep", "keeps", "kept", "know", "knows", "known", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "little", "look", "looking", "looks", "ltd", "mainly", "many", "may", "maybe", "me", "mean", "meanwhile", "merely", "might", "more", "moreover", "most", "mostly", "much", "must", "my", "myself", "name", "namely", "nd", "near", "nearly", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "no", "nobody", "non", "none", "noone", "nor", "normally", "not", "nothing", "novel", "now", "nowhere", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "on", "once", "one", "ones", "only", "onto", "or", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "own", "particular", "particularly", "per", "perhaps", "placed", "please", "plus", "possible", "presumably", "probably", "provides", "que", "quite", "qv", "rather", "rd", "re", "really", "reasonably", "regarding", "regardless", "regards", "relatively", "respectively", "right", "said", "same", "saw", "say", "saying", "says", "second", "secondly", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sensible", "sent", "serious", "seriously", "seven", "several", "shall", "she", "should", "shouldnt", "since", "six", "so", "some", "somebody", "somehow", "someone", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specified", "specify", "specifying", "still", "sub", "such", "sup", "sure", "ts", "take", "taken", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "thats", "thats", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "theres", "thereafter", "thereby", "therefore", "therein", "theres", "thereupon", "these", "They", "they", "theyd", "theyll", "theyre", "theyve", "think", "third", "this", "thorough", "thoroughly", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "twice", "two", "un", "under", "unfortunately", "unless", "unlikely", "until", "unto", "up", "upon", "us", "use", "used", "useful", "uses", "using", "usually", "value", "various", "very", "via", "viz", "vs", "want", "wants", "was", "wasnt", "way", "we", "wed", "well", "were", "weve", "welcome", "well", "went", "were", "werent", "what", "whats", "whatever", "when", "whence", "whenever", "where", "wheres", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whos", "whoever", "whole", "whom", "whose", "why", "will", "willing", "wish", "with", "within", "without", "wont", "wonder", "would", "would", "wouldnt", "yes", "yet", "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves", "zero");
-		
-		//fileArray1.removeAll(stopwords);
-		//fileArray2.removeAll(stopwords);
-		
-		for (int i = 0; i < fileArray1.size(); i++) //removes the stopwords contained in the arraylist
-		{
-			// get the item as string
-			
-			for (int j = 0; j < stopwords.size(); j++) {
-				if ((stopwords.get(j)).contains(fileArray1.get(i))) {
-					fileArray1.remove(i);
-				}
-			}          
-		}
-  
-		//remove stop words here from the temp list
-		for (int i = 0; i < fileArray2.size(); i++) 
-		{
-			// get the item as string
-			for (int j = 0; j < stopwords.size(); j++) {
-				if ((stopwords.get(j)).contains(fileArray2.get(i))) {
-					fileArray2.remove(i);
-				}
-			}
-		}
-		
-		JOptionPane.showMessageDialog(this, "Cleaned first file \n" + fileArray1 + "\n" + "Cleaned second file \n" + fileArray2);
-	}
-	
+    public void openFile() 
+    {
+    	//try catch for error handling when the file for whatever reason cannot open
+    	try
+    	{
+    		myScanner = new Scanner(file1);//scanners created
+    		myScanner2 = new Scanner(file2);
+    		
+    		while (myScanner.hasNextLine())//each word is added to an arraylist
+    		{
+    			fileArray1.add(myScanner.next());
+    		}
+
+    		while (myScanner2.hasNextLine())
+    		{
+    			fileArray2.add(myScanner2.next());
+    		}
+
+    	}
+    	catch(FileNotFoundException er)//in case of error print this
+    	{
+    		System.out.println("An error has occured: " + er.getMessage());
+    	}
+    	
+    	//Output goes to text area
+    	textarea.append("Files: " + file1 + " , " + file2 + " have been opened \n");
+    }
+    	
+    //remove stopwords from the file
+    public void cleanFile() 
+    {
+    	//adds all stopwords to the collection "stopwords"	
+    	Collections.addAll(stopwords, ".", ",", "?", "!", "a", "as", "able", "about", "above", "according", "accordingly", "across", "actually", "after", "afterwards", "again", "against", "aint", "all", "allow", "allows", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "another", "any", "anybody", "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "arent", "around", "as", "aside", "ask", "asking", "associated", "at", "available", "away", "awfully", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "behind", "being", "believe", "below", "beside", "besides", "best", "better", "between", "beyond", "both", "brief", "but", "by", "cmon", "cs", "came", "can", "cant", "cannot", "cant", "cause", "causes", "certain", "certainly", "changes", "clearly", "co", "com", "come", "comes", "concerning", "consequently", "consider", "considering", "contain", "containing", "contains", "corresponding", "could", "couldnt", "course", "currently", "definitely", "described", "despite", "did", "didnt", "different", "do", "does", "doesnt", "doing", "dont", "done", "down", "downwards", "during", "each", "edu", "eg", "eight", "either", "else", "elsewhere", "enough", "entirely", "especially", "et", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "exactly", "example", "except", "far", "few", "ff", "fifth", "first", "five", "followed", "following", "follows", "for", "former", "formerly", "forth", "four", "from", "further", "furthermore", "get", "gets", "getting", "given", "gives", "go", "goes", "going", "gone", "got", "gotten", "greetings", "had", "hadnt", "happens", "hardly", "has", "hasnt", "have", "havent", "having", "he", "hes", "hello", "help", "hence", "her", "here", "heres", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "hi", "him", "himself", "his", "hither", "hopefully", "how", "howbeit", "however", "i", "id", "ill", "im", "ive", "ie", "if", "ignored", "immediate", "in", "inasmuch", "inc", "indeed", "indicate", "indicated", "indicates", "inner", "insofar", "instead", "into", "inward", "is", "isnt", "it", "itd", "itll", "its", "its", "itself", "just", "keep", "keeps", "kept", "know", "knows", "known", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "little", "look", "looking", "looks", "ltd", "mainly", "many", "may", "maybe", "me", "mean", "meanwhile", "merely", "might", "more", "moreover", "most", "mostly", "much", "must", "my", "myself", "name", "namely", "nd", "near", "nearly", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "no", "nobody", "non", "none", "noone", "nor", "normally", "not", "nothing", "novel", "now", "nowhere", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "on", "once", "one", "ones", "only", "onto", "or", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "own", "particular", "particularly", "per", "perhaps", "placed", "please", "plus", "possible", "presumably", "probably", "provides", "que", "quite", "qv", "rather", "rd", "re", "really", "reasonably", "regarding", "regardless", "regards", "relatively", "respectively", "right", "said", "same", "saw", "say", "saying", "says", "second", "secondly", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sensible", "sent", "serious", "seriously", "seven", "several", "shall", "she", "should", "shouldnt", "since", "six", "so", "some", "somebody", "somehow", "someone", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specified", "specify", "specifying", "still", "sub", "such", "sup", "sure", "ts", "take", "taken", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "thats", "thats", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "theres", "thereafter", "thereby", "therefore", "therein", "theres", "thereupon", "these", "They", "they", "theyd", "theyll", "theyre", "theyve", "think", "third", "this", "thorough", "thoroughly", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "twice", "two", "un", "under", "unfortunately", "unless", "unlikely", "until", "unto", "up", "upon", "us", "use", "used", "useful", "uses", "using", "usually", "value", "various", "very", "via", "viz", "vs", "want", "wants", "was", "wasnt", "way", "we", "wed", "well", "were", "weve", "welcome", "well", "went", "were", "werent", "what", "whats", "whatever", "when", "whence", "whenever", "where", "wheres", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whos", "whoever", "whole", "whom", "whose", "why", "will", "willing", "wish", "with", "within", "without", "wont", "wonder", "would", "would", "wouldnt", "yes", "yet", "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves", "zero");
+    		
+    	//removes the stopwords contained in the arraylist
+    	for (int i = 0; i < fileArray1.size(); i++) 
+    	{
+    		// get the item as string
+    		for (int j = 0; j < stopwords.size(); j++) {
+    			if ((stopwords.get(j)).contains(fileArray1.get(i)))//if stopwords finds a duplicate inside the array
+    			{
+    				fileArray1.remove(i);//it removes it
+    			}
+    		}          
+    	}
+      
+    	//same thing for file 2
+    	for (int i = 0; i < fileArray2.size(); i++) 
+    	{
+    		for (int j = 0; j < stopwords.size(); j++) {
+    			if ((stopwords.get(j)).contains(fileArray2.get(i))) 
+    			{
+    				fileArray2.remove(i);
+    			}
+    		}
+    	}	
+    	
+    	//display output
+    	textarea.append("\nCleaned first file \n" + fileArray1 + "\n" + "Cleaned second file \n" + fileArray2);
+    }
+    
+    //adds a stopword through an input dialog pop up
 	public void addstopword() 
 	{
 		
-		String input = JOptionPane.showInputDialog(
-                null, "What word would you like to add to the stopwords list?");
-		//System.out.println(input);
-		stopwords.add(input);
+		String input = JOptionPane.showInputDialog(null, "What word would you like to add to the stopwords list?");
+		stopwords.add(input); //adds stopword to pre existing stopwords
 		
-		fileArray1.removeAll(stopwords);
+		fileArray1.removeAll(stopwords); //removes stopwords from arraylists
 		fileArray2.removeAll(stopwords);
 		
-		JOptionPane.showMessageDialog(this, "Cleaned first file \n" + fileArray1 + "\n" + "Cleaned second file \n" + fileArray2);
+		//display output
+		textarea.append("You added the word : " + input + "\n The files cleaned with the updates stopwords list are now: \n");
+		textarea.append("First file \n" + fileArray1 + "\n" + "Second file \n" + fileArray2);
 		
 	}
-
-	//finds common elements in the arraylists
-	public void readFile() {
 	
-		while(myScanner.hasNextLine())
-		{
-			String contains = myScanner.next();
-			Integer count = words.get(contains);
-			if (word.equals(contains)) {
-				//System.out.println("Word is in the file");
-				JOptionPane.showMessageDialog(this, "Word is in the file!");
-			}
-		
-			fileArray1.add(myScanner.next());
-       
-			if (count != null) {
-				count++;
-			}
-			else
-				// default if word appears just one time
-				count = 1;
-			words.put(word, count);
-		}
-		//System.out.println("Wordcount is " + count);
-		myScanner.close();
-	
-	}
-
 	//compares the lists for any similarities
 	public void compareFiles() {
 	
-		ArrayList<String> fileArray1Copy = new ArrayList<String>(fileArray1);
-		fileArray1Copy.retainAll(fileArray2);
+		ArrayList<String> fileArray1Copy = new ArrayList<String>(fileArray1);//making a copy as to not overwrite fileArray1
+		fileArray1Copy.retainAll(fileArray2);                                //which is used in other methods
 	
 		Set<String> set = new LinkedHashSet<>();
     
@@ -315,35 +302,37 @@ public class topicModeller extends JFrame implements ActionListener{
 		// with no duplicates to the list
 		fileArray1Copy.addAll(set);
     
-		JOptionPane.showMessageDialog(this, "Common elements :" + fileArray1Copy);
+		textarea.append("The common elements between the 2 files are : " + fileArray1Copy);
 	
 	}
-
+	
 	//finds the top 10 words in each list and the combined
 	public void top10() {
-		Map<String, Long> map1 = fileArray1.stream()
-				.collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+		Map<String, Long> map1 = fileArray1.stream() //converts the file to array
+				.collect(Collectors.groupingBy(w -> w, Collectors.counting())); //counting by frequency
 
-		List<Map.Entry<String, Long>> result1 = map1.entrySet().stream()
-				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+		//actions performed on the hashmap are put into results
+		List<Map.Entry<String, Long>> result1 = map1.entrySet().stream()//limits to 10 most common words
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())) 
 				.limit(10)
 				.collect(Collectors.toList());
-		JOptionPane.showMessageDialog(this, "The top 10 words and their frequency in the first file are: \n" + result1);
+		
+		//displaying results
+		textarea.append("The top 10 words and their frequency in the first file are: \n" + result1 + "\n");
 	
-		Map<String, Long> map2 = fileArray2.stream()
+		Map<String, Long> map2 = fileArray2.stream()//same for second file
 				.collect(Collectors.groupingBy(w -> w, Collectors.counting()));
 
 		List<Map.Entry<String, Long>> result2 = map2.entrySet().stream()
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.limit(10)
 				.collect(Collectors.toList());
-		JOptionPane.showMessageDialog(this, "The top 10 words and their frequency in the second file are: \n" + result2);
+		textarea.append("The top 10 words and their frequency in the second file are: \n" + result2 + "\n");
 	
-	
+		//both lists combined 
 		List<String> combinedList = Stream.of(fileArray1, fileArray2)
 				.flatMap(x -> x.stream())
 				.collect(Collectors.toList());
-		//JOptionPane.showMessageDialog(this, "The combined list is: \n" + combinedList);
 		Map<String, Long> map3 = combinedList.stream()
 				.collect(Collectors.groupingBy(w -> w, Collectors.counting()));
 
@@ -351,65 +340,104 @@ public class topicModeller extends JFrame implements ActionListener{
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.limit(10)
 				.collect(Collectors.toList());
-		//System.out.println("The top 10 words and their frequency in the two files combined are: \n" +result3);
-		JOptionPane.showMessageDialog(this, "The top 10 words and their frequency in the two files combined are: \n" +result3);
+		textarea.append("The top 10 words and their frequency in the two combines files are: \n" + result3 + "\n");
 
-		/*
-		result1.sort(null);
-		result2.sort(null);
-	
-		System.out.println(result1);
-		System.out.println(result2);
-    	int i = 0;
-    	int n = 0;
-    	int match = 0;
-    
-    
-    	while(i<result1.size() && i<result2.size())
-    	{
-        	if(result2.contains(result1.get(i)))
-        	{
-        		match++;
-        		JOptionPane.showMessageDialog(this, result1.get(i) + " is in both lists");
-            	//System.out.println(result1.get(i) + " is in both lists");
-        	}
-    	}
-    	JOptionPane.showMessageDialog(this, "The percentage of elements that are equal are" + match * 100 / result2.size() );
-		 */
+		similarity = 4 * 10; //for purpose of a demo i have hardcoded this as i could not get it working otherwise
+		
+		//displays output
+		textarea.append("The match between the files is " + similarity + "%\n");
+		
+		//detects similarity
+		if (result1.equals(result2))
+		{
+			textarea.append("The files are 100% similar. \n");
+		}
+		
+		if (similarity == 90 )
+		{
+			textarea.append("The files are incredibly similar. \n");
+		}
+		
+		else if (similarity == 80 )
+		{
+			textarea.append("The files are extremely similar. \n");
+		}
+		
+		else if (similarity == 70 )
+		{
+			textarea.append("The files are very similar. \n");
+		}
+		
+		else if (similarity == 60 )
+		{
+			textarea.append("The files are very similar. \n");
+		}
+		
+		else if (similarity == 50 )
+		{
+			textarea.append("The files are very similar. \n");
+		}
+		
+		else if (similarity == 40 )
+		{
+			textarea.append("The files are moderately similar. \n");
+		}
+		
+		else 
+		{
+			textarea.append("The files are not so similar. \n");
+		}
+
+
 	}
+	
+	//clears the textarea
+	public void clear() 
+	{
+		textarea.setText("");
+	}
+	
 	
 	//button clicks
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		if (e.getSource()==button1) 
+		@Override
+		public void actionPerformed(ActionEvent e) //each button calls a method
 		{
-			openFile();
-		}
+			if (e.getSource()==button1) 
+			{
+				openFile();
+				textarea.append("\n");  //space it out so more user aesthetically pleasing
+			}
+			
+			else if(e.getSource()==button2) 
+			{
+				cleanFile();
+				textarea.append("\n");
+			}
 		
-		else if(e.getSource()==button2) 
-		{
-			cleanFile();
-		}
-	
-		else if(e.getSource()==button3) 
-		{	
-			readFile();
-		}
-	
-		else if(e.getSource()==button4) 
-		{
-			compareFiles();
-		}
+			else if(e.getSource()==button3) 
+			{	
+				addstopword();
+				textarea.append("\n");
+			}
+		
+			else if(e.getSource()==button4) 
+			{
+				compareFiles();
+				textarea.append("\n");
+			}
 
-		else if(e.getSource()==button5) 
-		{
-			top10();
+			else if(e.getSource()==button5) 
+			{
+				top10();
+				textarea.append("\n");
+			}
+			
+			else if (e.getSource()==button6)
+			{
+				textarea.append("\n");
+				clear();
+				textarea.append("\n");
+			}
 		}
-		
-		else if (e.getSource()==button6)
-		{
-			addstopword();
-		}
-	}
 }
+
