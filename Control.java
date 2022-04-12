@@ -1,14 +1,13 @@
+package assignmentTM;
 
-public class Control extends fileProcessor {
+public class Control {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		fileProcessor fp = new fileProcessor();
-		fp.openFile();
-		fp.cleanFile();
-		fp.readFile(null, null);
-		fp.Compare();
-		fp.top10();
+		//displays GUI
+		topicModeller tmGUI = new topicModeller();
+		tmGUI.setVisible(true);
+
 	}
 
 }
